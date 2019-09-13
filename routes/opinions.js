@@ -83,7 +83,7 @@ router.post('/',
     try {
       sentimentResponse = await getSentiment(req.body.opinion);
       console.log(sentimentResponse);
-      const { sentiment: { document: { score, label }}} = JSON.stringify(sentimentResponse, null, 2);
+      const { sentiment: { document: { score, label }}} = sentimentResponse;
       sentiment = label;
       percent = Math.abs(score);
     } catch (error) {
