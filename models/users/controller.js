@@ -6,12 +6,6 @@ const { validateMongooseType } = require('../utils');
 
 const validate = method => {
   switch (method) {
-    case "createUser": {
-      return [
-        check("username", "username is required").exists(),
-        check("avatar", "avatar is required").exists()
-      ];
-    }
     case "getUser": {
       return [
         check("_id", "_id is required").exists(),
@@ -20,7 +14,7 @@ const validate = method => {
     }
     case "getByUsername": {
       return [
-        check("username", "username is required").exists(),
+        check("ipAddress", "ipAddress is required").exists(),
       ];
     }
     case "deleteUser": {
@@ -40,12 +34,12 @@ const validate = method => {
 
 // CRUD
 
-async function createUser(username, avatar) {
+async function createUser(ipAddress) {
   try {
     // If user already exists, retrieve and return that one
-    const [oldUser] = await getUsers({ username });
+    const [oldUser] = await getUsers({ ipAddress });
     if (oldUser) { return oldUser };
-    const newUser = await User.create({ username, avatar });
+    const newUser = await User.create({ ipAddress });
     return newUser;
   } catch (error) {
     console.error("Error got from Mongo - creation :: ", error);
@@ -63,9 +57,9 @@ async function getUser(_id) {
   }
 }
 
-async function getUserByUsername(username) {
+async function getUserByUsername(ipAddress) {
   try {
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ ipAddress });
     return user;
   } catch (error) {
     console.error("Error got from Mongo - get single :: ", error);

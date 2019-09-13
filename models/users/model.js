@@ -3,9 +3,10 @@ const uniqueValidator = require('mongoose-unique-validator')
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
-    username: { type: String, required: true, index: true, unique: true },
-    avatar: { type: String, required: true },
-    games: [{ type: Schema.Types.ObjectId, ref: 'Game' }]
+  ipAddress: { type: String, required: true, index: true, unique: true },
+  firstName: { type: String },
+  lastName: { type: String },
+  opinions: [{ type: Schema.Types.ObjectId, ref: 'Opinion' }]
 }, {timestamps: true});
 
 UserSchema.plugin(uniqueValidator, { message: 'Error, expected {PATH} to be unique.' });

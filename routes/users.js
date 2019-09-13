@@ -42,15 +42,11 @@ router.get('/',
     res.send(users);
 });
 
-router.post('/', 
-  validate('createUser'),
+router.post('/',
   async function(req, res, next) {
     // Create new user
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
-    }
-    const user = await createUser(req.body.username, req.body.avatar);
+    const ipAddress = req.header('x-forwarded-for') || req.connection.remoteAddress;
+    const user = await createUser(ipAddress);
     if (user.err) {
       res.status(500);
       res.send(user.error);
