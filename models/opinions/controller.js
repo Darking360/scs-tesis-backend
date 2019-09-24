@@ -11,6 +11,8 @@ const validate = method => {
       return [
         check("opinion", "Opinion must be passed").exists(),
         check("opinion", "Opinion must be a String").isString(),
+        check("service", "Service must be passed").exists(),
+        check("service", "Service must be a String").isString(),
         check("opinion", "Opinion must be between 10 and 140 characters").isLength({ min: 10, max: 140 }),
         check("location", "Location must be passed").exists(),
         body("location").custom(validateLocationType)
@@ -110,7 +112,7 @@ async function getAroundPoint(point, kilometers) {
     const opinions = await Opinion.find({
       "location": {
         $near: {
-          $maxDistance: kilometers,
+          $maxDistance: kilometers * 1000,
           $geometry: {
             type: "Point",
             coordinates: point

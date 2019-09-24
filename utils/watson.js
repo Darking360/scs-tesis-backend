@@ -1,7 +1,7 @@
 var NaturalLanguageUnderstandingV1 = require("ibm-watson/natural-language-understanding/v1.js");
 
 var nlu = new NaturalLanguageUnderstandingV1({
-  iam_apikey: "",
+  iam_apikey: process.env.WATSON_KEY,
   version: "2018-04-05",
   url: "https://gateway.watsonplatform.net/natural-language-understanding/api/"
 });
