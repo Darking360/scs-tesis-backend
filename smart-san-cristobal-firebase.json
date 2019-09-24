@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "smart-san-cristobal",
+  "private_key_id": "4db033e0ad2d23195f9f36cd8cd761c8fdedb7fe",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCYhhj190QXjwGE\nmnKg20vfIX0zA/g47k5flJ4twv2kUB2YZFFCBRPOL7BRXOwX9MMrfZbY/CFJWA4x\n5K8a7HDQ09W9m6OYg3ssJ1OYHPJY6FtNLYVyUg2KH+25BQnlnvO5FEUHIO0NdtNt\n80MyiAwkKxsc4EDI5llaQ7OU0YPvwwAOQZXYXVT6z51RenQF1DOIb+jknykvgosD\nX5XT26g7bXNLPBZLU1kUwtF491wAaXt78nYuz/dxrFWORYR4bL04VoaGO20mnIw5\nr99RQSBW9ZktAFqHp7LpkqPwio3vcFEbEduMABjmG6RZCSOYL+RBQutO4+MNXnrG\nvlSmE22FAgMBAAECggEAAc6G5ccAvIZ2R5FxPUUTjypfn3sSOl4G12ACmDWR065+\no0ELf6pOcHlHfE0asjlRQjNrvQrJy5Ginvjm2XoT52fo2EdnfqtQJlJYZqH5DTKv\noIfLpgtpGdHBUoaS1vB1IAgMf3nKYr0RGvRVwpPhepi9V9WmtXHxGMFBZ+3OT+Td\nj9hNiqQZ3Ed+q5nE6vegsx4RKEAEd1/niUQRjUjdJAU2SmQW2UAsURxHj39uIRV9\na3nH6p7HMSwZ5WyrH4I8OKTHe3eEj/9+Nl/xBn1kDuOgI7wePuyI/SCSrp4k65ZY\n/5Un0Hs2+1QpxA2diW0LMxt2xa0Nof1j+qUu5NA2EwKBgQDIhdxUAzphswlEPQ8H\nzU5CH2nzvCVqwjRCpG3haSrvaqxUZuIt5eAuWRZX/SZDN9wOXhI0r+QJUrv+MQJ/\nyMGBZfsEh8kLwW76NeQSrvRF/L1XAny+bhUfIse8Lah2l6wtN21EJBOwo+lo/Neq\nhx9l53IJupuRtldkwBFBDa5w6wKBgQDCuK1Ys2fyCHHg4UhyQWAcVJxs3jDCkH3d\nj9myVG1mVHblK6/LeYWM/NND4ASIgIR+T8Sal0aJ2tscFHwda3zyl1vjdN2fSa1h\n4blco8mhSd1GuWH+NXT+A2lMv6/mN5dCzxAT8dMc044gYJ2jxMR5rzeh1nPKxuA/\n0zZwiy5/TwKBgQCifz/WYStNgx3OS8DDbM+va++bkeusgSaCnudglK4ziHmQiDNg\nSHoMdStTMJVyQXE1v2v3gFZGa+JmkmbZEOInL3Jk8Hiu6xk48LUbouXXVYJGYYCf\nfWvmaHP9/e4X9L+VgOYuIyJFsf7zknpe+dMq7I0Qb0WkpmRaA/+3fRPQ8wKBgDBI\n0RtMqXrX4z0rP+atFWMRDBTm59pnL/7P2+CflN0qFq1vLtFa2eYDD3QmSZl7nN8h\ncpQO7PvkHC8TWU+GRt507+EwKoCEKY07BtbU+nuXMFqIP6dkpBUUzXitk7WXlVeI\ntujrLzlXsEeRDaX9debirv3fiqj+tb695iL0MFx7AoGADRFgjr7tF0+kuodgr1Yy\nASXd9513NstStvdMn9J8uq39CFXZ36QsKozBccS0IDwPdjANJf288sWmqjBznAOI\n2NRWFrEapkdaD0gbxQC+BwYiVuoiySuijm8rool9V23lqOxYpM4YIPziUQWf1EKc\ntGutEgou8jsrdNf5FJWJd+8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-gw0p5@smart-san-cristobal.iam.gserviceaccount.com",
+  "client_id": "112851340375246364286",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-gw0p5%40smart-san-cristobal.iam.gserviceaccount.com"
+}

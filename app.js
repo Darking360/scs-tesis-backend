@@ -1,3 +1,6 @@
+// Env variables
+require('dotenv').config()
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -8,6 +11,7 @@ var cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var opinionsRouter = require('./routes/opinions');
+var tokensRouter = require('./routes/tokens');
 
 // MongoDB configuration
 const mongoose = require('mongoose');
@@ -37,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/opinions', opinionsRouter);
+app.use('/tokens', tokensRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

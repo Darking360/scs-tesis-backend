@@ -2,6 +2,8 @@ const { OpinionModel: Opinion } = require("./model");
 const { check, body } = require("express-validator/check");
 const { addOpinionToUser } = require("../opinions/controller");
 const { validateMongooseType, validateLocationType, validateNumber } = require("../utils");
+const { sendNotification } = require("../utils");
+const { topicAll } = require('../constants')
 
 // Validations
 
@@ -44,7 +46,6 @@ const validate = method => {
         check("lat", "lat must be a number").custom(validateNumber),
         check("lng", "lng must be a number").custom(validateNumber),
         check("kilometers", "kilometers must be a number").custom(validateNumber),
-        
       ];
     }
   }
@@ -55,6 +56,8 @@ const validate = method => {
 async function createOpinion(opinion) {
   try {
     const newOpinion = await Opinion.create({ ...opinion });
+    // Add here validation for notification
+    sendNotification(topicAll);
     return newOpinion;
   } catch (error) {
     console.error("Error got from Mongo - creation :: ", error);
