@@ -3,7 +3,8 @@ const { check, body } = require("express-validator/check");
 const { addOpinionToUser } = require("../opinions/controller");
 const { validateMongooseType, validateLocationType, validateNumber } = require("../utils");
 const { sendNotification } = require("../utils");
-const { topicAll } = require('../constants')
+const { topicAll } = require('../constants');
+const { readValue, writeValue } = require('../../utils/redis');
 
 // Validations
 
@@ -51,13 +52,38 @@ const validate = method => {
   }
 };
 
+// Helper to send notification
+
+async function checkOpinionThreshold({ location, service }) {
+  const OpinionsCountOfDay = Options.find({
+    created_at: new Date()
+  }).count();
+  const badOpinionsCount = Opinion.find({
+    sentiment,
+    "location": {
+      $near: {
+        $maxDistance: kilometers * 1000, // Adjust this to correct kilometer differ
+        $geometry: {
+          type: "Point",
+          coordinates: [location.latitude, location.longitude]
+        }
+      }
+    },
+    created_at: new Date()
+  }).count();
+  const lastNotificationSent = await readValue(`opinions:${service}:date`);
+  if (badOpinionsCount > (OpinionsCountOfDay - badOpinionsCount)) {
+    sendNotification(topicAll, newOpinion._id);
+    writeValue(`opinions:${service}:date`, new Date());
+  }
+}
+
 // CRUD methods
 
 async function createOpinion(opinion) {
   try {
     const newOpinion = await Opinion.create({ ...opinion });
-    // Add here validation for notification
-    sendNotification(topicAll);
+    checkOpinionThreshold(newOpinion);
     return newOpinion;
   } catch (error) {
     console.error("Error got from Mongo - creation :: ", error);

@@ -8,15 +8,14 @@ admin.initializeApp({
   databaseURL: "https://smart-san-cristobal.firebaseio.com"
 });
 
-function sendNotification(topic) {
+function sendNotification(topic, id) {
     const message = {
-        notification: {
-            title: "Account Deposit",
-            body: "A deposit to your savings account has just cleared."
-          },
-        data: {
-            account: "Savings",
-            balance: "$3020.25"
+        webpush: {
+            notification: {
+                title: "Alerta sobre servicios!",
+                body: "Hay problemas con los servicios",
+                click_action: `http://localhost:3001?notification=${}`
+            },
         },
         topic: topic
     };
