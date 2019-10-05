@@ -4,7 +4,7 @@ const { addOpinionToUser } = require("../opinions/controller");
 const { validateMongooseType, validateLocationType, validateNumber } = require("../utils");
 const { sendNotification } = require("../utils");
 const { topicAll } = require('../constants');
-const { readValue, writeValue } = require('../../utils/redis');
+// const { readValue, writeValue } = require('../../utils/redis');
 
 // Validations
 
@@ -55,26 +55,44 @@ const validate = method => {
 // Helper to send notification
 
 async function checkOpinionThreshold({ location, service }) {
-  const OpinionsCountOfDay = Options.find({
-    created_at: new Date()
-  }).count();
-  const badOpinionsCount = Opinion.find({
-    sentiment,
+  const start = new Date();
+  const end = new Date();
+  start.setHours(0,0,0,0);
+  end.setHours(23,59,59,999);
+  const opinionsCountOfDay = await Opinion.count({
+    service,
     "location": {
       $near: {
-        $maxDistance: kilometers * 1000, // Adjust this to correct kilometer differ
+        $maxDistance: 1 * 1000, // Adjust this to correct kilometer differ for neighborhoods or areas
         $geometry: {
           type: "Point",
-          coordinates: [location.latitude, location.longitude]
+          coordinates: [location.coordinates[0], location.coordinates[1]]
         }
       }
     },
-    created_at: new Date()
-  }).count();
-  const lastNotificationSent = await readValue(`opinions:${service}:date`);
-  if (badOpinionsCount > (OpinionsCountOfDay - badOpinionsCount)) {
+    createdAt: { $gte: start, $lt: end }
+  });
+  const badOpinionsCount = await Opinion.count({
+    service,
+    sentiment: 'negative',
+    "location": {
+      $near: {
+        $maxDistance: 1 * 1000, // Adjust this to correct kilometer differ for neighborhoods or areas
+        $geometry: {
+          type: "Point",
+          coordinates: [location.coordinates[0], location.coordinates[1]]
+        }
+      }
+    },
+    createdAt: { $gte: start, $lt: end }
+  });
+  console.log('Counts ---->')
+  console.log(opinionsCountOfDay)
+  console.log(badOpinionsCount)
+  // const lastNotificationSent = await readValue(`opinions:${service}:date`);
+  if (badOpinionsCount > (opinionsCountOfDay - badOpinionsCount)) { // Take 1 out of this
     sendNotification(topicAll, newOpinion._id);
-    writeValue(`opinions:${service}:date`, new Date());
+    // writeValue(`opinions:${service}:date`, new Date());
   }
 }
 

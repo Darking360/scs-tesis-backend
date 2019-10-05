@@ -1,5 +1,18 @@
 var redis = require("redis");
-const client = redis.createClient();
+let client;
+
+if (process.env.REDIS_URL) {
+    // Check for local usage later
+    if (process.env.NODE_ENV !== 'test') {
+      client = redis.createClient('redis');
+    } else {
+      client = redis.createClient(process.env.REDIS_URL);
+    }
+  } else if (process.env.NODE_ENV === 'test') {
+    client = redis.createClient('redis');
+  } else {
+    client = redis.createClient('redis');
+  }
 
 async function readValue(key) {
     try {
