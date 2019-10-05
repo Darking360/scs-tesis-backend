@@ -57,6 +57,7 @@ const validate = method => {
 async function checkOpinionThreshold({ location, service }) {
   const start = new Date();
   const end = new Date();
+  const now = new Date();
   start.setHours(0,0,0,0);
   end.setHours(23,59,59,999);
   const opinionsCountOfDay = await Opinion.count({
@@ -86,11 +87,9 @@ async function checkOpinionThreshold({ location, service }) {
     },
     createdAt: { $gte: start, $lt: end }
   });
-  console.log('Counts ---->')
-  console.log(opinionsCountOfDay)
-  console.log(badOpinionsCount)
-  // const lastNotificationSent = await readValue(`opinions:${service}:date`);
-  if (badOpinionsCount > (opinionsCountOfDay - badOpinionsCount)) { // Take 1 out of this
+  const lastNotificationSent = await readValue(`opinions:${service}:date`);
+  const minuteDifference = now - lastNotificationSent; // Check minute difference between last notification sent and now
+  if (badOpinionsCount > (opinionsCountOfDay - badOpinionsCount) && minuteDifference > 20) { // Take 1 out of this
     sendNotification(topicAll, newOpinion._id);
     // writeValue(`opinions:${service}:date`, new Date());
   }
