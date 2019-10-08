@@ -4,7 +4,8 @@ const { addOpinionToUser } = require("../opinions/controller");
 const { validateMongooseType, validateLocationType, validateNumber } = require("../utils");
 const { sendNotification } = require("../utils");
 const { topicAll } = require('../constants');
-// const { readValue, writeValue } = require('../../utils/redis');
+const { readValue, writeValue } = require('../../utils/redis');
+const { diffMinute } = require("../../routes/utils");
 
 // Validations
 
@@ -54,7 +55,7 @@ const validate = method => {
 
 // Helper to send notification
 
-async function checkOpinionThreshold({ location, service }) {
+async function checkOpinionThreshold({ _id, location, service }) {
   const start = new Date();
   const end = new Date();
   const now = new Date();
@@ -87,11 +88,15 @@ async function checkOpinionThreshold({ location, service }) {
     },
     createdAt: { $gte: start, $lt: end }
   });
-  const lastNotificationSent = await readValue(`opinions:${service}:date`);
-  const minuteDifference = now - lastNotificationSent; // Check minute difference between last notification sent and now
-  if (badOpinionsCount > (opinionsCountOfDay - badOpinionsCount) && minuteDifference > 20) { // Take 1 out of this
-    sendNotification(topicAll, newOpinion._id);
-    // writeValue(`opinions:${service}:date`, new Date());
+  var lastNotificationSent = await readValue(`opinions:${service}:date`);
+  let minuteDifference = 60;
+  if (lastNotificationSent) {
+    lastNotificationSent = new Date(lastNotificationSent);
+    minuteDifference = diffMinute(now, lastNotificationSent);
+  }
+  if (badOpinionsCount > (opinionsCountOfDay - badOpinionsCount) && (minuteDifference > 20 || !lastNotificationSent)) {
+    sendNotification(topicAll, _id);
+    writeValue(`opinions:${service}:date`, new Date());
   }
 }
 
