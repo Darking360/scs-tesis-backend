@@ -30,47 +30,47 @@ router.get('/',
 router.get('/search', 
   validate('searchOpinions'),
   async function(req, res, next) {
-    // Create new game
+    // Create new opinion
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    const games = await getAroundPoint([req.query.lat, req.query.lng], req.query.kilometers);
-    if (games.err) {
+    const opinions = await getAroundPoint([req.query.lat, req.query.lng], req.query.kilometers);
+    if (opinions.err) {
       res.status(500);
-      res.send(games.error);
+      res.send(opinions.error);
     }
     res.status(200);
-    res.send(games);
+    res.send(opinions);
 });
 
 router.get('/:_id',
   transformParamsToBody,
   validate('getOpinion'),
   async function(req, res, next) {
-    // Get a game
+    // Get a opinion
     req.body._id = req.params._id;
     const errors = validationResult(req);
     console.log(errors);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    const game = await getOpinion(req.params._id);
-    if (!game) {
+    const opinion = await getOpinion(req.params._id);
+    if (!opinion) {
       return res.status(404).json({ errors: [{ msg: 'Opinion not found' }] });
     }
-    if (game.error) {
+    if (opinion.error) {
       res.status(500);
-      res.send(game.error);
+      res.send(opinion.error);
     }
     res.status(200);
-    res.send(game);
+    res.send(opinion);
 });
 
 router.post('/', 
   validate('createOpinion'),
   async function(req, res, next) {
-    // Create new game
+    // Create new opinion
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
@@ -89,18 +89,18 @@ router.post('/',
     } catch (error) {
       console.log('Error :: ', error);
     }
-    const game = await createOpinion({
+    const opinion = await createOpinion({
       user: user._id,
       sentiment,
       percent,
       ...req.body
     });
-    if (game.err) {
+    if (opinion.err) {
       res.status(500);
-      res.send(game.error);
+      res.send(opinion.error);
     }
     res.status(200);
-    res.send(game);
+    res.send(opinion);
 });
 
 module.exports = router;

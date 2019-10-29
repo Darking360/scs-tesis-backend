@@ -94,7 +94,7 @@ async function checkOpinionThreshold({ _id, location, service }) {
     lastNotificationSent = new Date(lastNotificationSent);
     minuteDifference = diffMinute(now, lastNotificationSent);
   }
-  if (badOpinionsCount > (opinionsCountOfDay - badOpinionsCount) && (minuteDifference > 20 || !lastNotificationSent)) {
+  if (true) { //badOpinionsCount > (opinionsCountOfDay - badOpinionsCount) && (minuteDifference > 20 || !lastNotificationSent)) {
     sendNotification(topicAll, _id);
     writeValue(`opinions:${service}:date`, new Date());
   }
@@ -115,8 +115,27 @@ async function createOpinion(opinion) {
 
 async function getOpinion(_id) {
   try {
-    const game = await Opinion.findOne({ _id });
-    return game;
+    const start = new Date();
+    const end = new Date();
+    const now = new Date();
+    start.setHours(0,0,0,0);
+    end.setHours(23,59,59,999);
+    const opinion = await Opinion.findOne({ _id });
+    const badOpinions = await Opinion.find({
+      service: opinion.service,
+      sentiment: 'negative',
+      "location": {
+        $near: {
+          $maxDistance: 1 * 1000, // Adjust this to correct kilometer differ for neighborhoods or areas
+          $geometry: {
+            type: "Point",
+            coordinates: [opinion.location.coordinates[0], opinion.location.coordinates[1]]
+          }
+        }
+      },
+      createdAt: { $gte: start, $lt: end }
+    });
+    return { opinion, badOpinions };
   } catch (error) {
     console.error("Error got from Mongo - get single :: ", error);
     return { err: true, error };
