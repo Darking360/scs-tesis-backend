@@ -14,7 +14,7 @@ function sendNotification(topic, id) {
             notification: {
                 title: "Alerta sobre servicios!",
                 body: "Hay problemas con los servicios",
-                click_action: `http://localhost:3001?notification=${id}`
+                click_action: `${process.env.FRONTEND_URL}?notification=${id}`
             },
         },
         topic: topic
