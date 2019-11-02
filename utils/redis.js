@@ -2,17 +2,12 @@ var redis = require("redis");
 let client;
 
 if (process.env.REDIS_URL) {
-    // Check for local usage later
-    if (process.env.NODE_ENV !== 'test') {
-      client = redis.createClient({ host: 'redis' });
-    } else {
-      client = redis.createClient(process.env.REDIS_URL);
-    }
-  } else if (process.env.NODE_ENV === 'test') {
-    client = redis.createClient({ host: 'redis' });
-  } else {
-    client = redis.createClient({ host: 'redis' });
-  }
+  client = redis.createClient(process.env.REDIS_URL);
+} else if (process.env.NODE_ENV === 'test') {
+  client = redis.createClient({ host: 'redis' });
+} else {
+  client = redis.createClient({ host: 'redis' });
+}
 
 const {promisify} = require('util');
 const getAsync = promisify(client.get).bind(client);
