@@ -115,12 +115,11 @@ async function createOpinion(opinion) {
 
 async function getOpinion(_id) {
   try {
-    const start = new Date();
-    const end = new Date();
-    const now = new Date();
+    const opinion = await Opinion.findOne({ _id });
+    const start = new Date(opinion.createdAt);
+    const end = new Date(opinion.createdAt);
     start.setHours(0,0,0,0);
     end.setHours(23,59,59,999);
-    const opinion = await Opinion.findOne({ _id });
     const badOpinions = await Opinion.find({
       service: opinion.service,
       sentiment: 'negative',

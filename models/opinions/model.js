@@ -26,7 +26,7 @@ const OpinionSchema = new Schema({
   }
 }, { timestamps: true });
 
-OpinionSchema.index({ geometry: '2d' });
+OpinionSchema.index({ location: '2dsphere' });
 
 const OpinionModel = mongoose.model("Opinion", OpinionSchema);
 
